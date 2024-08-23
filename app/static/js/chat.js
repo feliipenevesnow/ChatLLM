@@ -10,6 +10,27 @@ toggleSidebarBtn.addEventListener('click', () => {
     sidebar.classList.toggle('show');
 });
 
+document.getElementById('user-input').addEventListener('keydown', function(event) {
+    if (event.key === 'Enter' && !event.shiftKey) {
+        event.preventDefault();
+        document.getElementById('send-btn').click();
+    }
+});
+
+document.querySelectorAll('.edit-chat-name').forEach(button => {
+    button.addEventListener('click', function(e) {
+        e.preventDefault();
+        let nameElement = this.previousElementSibling;
+        let currentName = nameElement.textContent;
+        nameElement.innerHTML = `<input type='text' class='form-control' value='${currentName}'>`;
+        let input = nameElement.querySelector('input');
+        input.focus();
+
+        input.addEventListener('blur', function() {
+            nameElement.textContent = this.value || currentName;
+        });
+    });
+});
 
 
 toggleThemeBtn.addEventListener('click', () => {
