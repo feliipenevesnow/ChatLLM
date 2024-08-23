@@ -4,7 +4,14 @@ const sidebar = document.getElementById('sidebar');
 const toggleSidebarBtn = document.getElementById('toggle-sidebar-btn');
 const chatBackground = document.getElementById('chat-background');
 
-// Alternar tema claro/escuro e trocar imagem
+
+
+toggleSidebarBtn.addEventListener('click', () => {
+    sidebar.classList.toggle('show');
+});
+
+
+
 toggleThemeBtn.addEventListener('click', () => {
     body.classList.toggle('dark-mode');
 
@@ -15,7 +22,7 @@ toggleThemeBtn.addEventListener('click', () => {
     }
 });
 
-// Alternar menu lateral retrátil
+
 toggleSidebarBtn.addEventListener('click', () => {
     sidebar.classList.toggle('collapsed');
 });
@@ -25,7 +32,7 @@ document.getElementById('send-btn').addEventListener('click', function() {
     if (userInput) {
         const chat = document.getElementById('chat');
 
-        // Cria a mensagem do usuário
+
         const userMessage = document.createElement('div');
         userMessage.classList.add('message', 'me');
         userMessage.innerHTML = `
@@ -33,7 +40,7 @@ document.getElementById('send-btn').addEventListener('click', function() {
         `;
         chat.appendChild(userMessage);
 
-        // Cria a resposta do bot
+
         const botMessage = document.createElement('div');
         botMessage.classList.add('message', 'bot');
         botMessage.innerHTML = `
@@ -41,21 +48,18 @@ document.getElementById('send-btn').addEventListener('click', function() {
         `;
         chat.appendChild(botMessage);
 
-        // Rolagem automática para a última mensagem
         chat.scrollTop = chat.scrollHeight;
 
-        // Limpa o campo de entrada
         document.getElementById('user-input').value = '';
     }
 });
 
-// Alternar classe 'active' nos links de chat
+
 document.querySelectorAll('.nav-link').forEach(link => {
     link.addEventListener('click', function() {
-        // Remove a classe 'active' de todos os links
+
         document.querySelectorAll('.nav-link').forEach(nav => nav.classList.remove('active'));
 
-        // Adiciona a classe 'active' ao link clicado
         this.classList.add('active');
     });
 });

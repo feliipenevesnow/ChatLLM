@@ -1,3 +1,4 @@
+
 body {
     height: 100vh;
     display: flex;
@@ -10,9 +11,9 @@ body {
     position: fixed;
     top: 15px;
     left: 15px;
-    z-index: 1001; /* Certifica-se de que os botões estão acima do menu lateral */
+    z-index: 1001;
     display: flex;
-    gap: 10px; /* Espaço entre os botões */
+    gap: 10px;
 }
 
 #floating-buttons .btn {
@@ -30,21 +31,20 @@ body {
 
 #sidebar {
     width: 250px;
-    transition: all 0.3s ease; /* Transição suave para todos os atributos */
+    transition: transform 0.3s ease, left 0.3s ease;
     background-color: #343a40;
     color: white;
-    position: relative; /* Permite que o conteúdo seja posicionado de forma adequada */
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
     padding: 5rem 1rem 1rem 1rem;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
 }
 
-#sidebar.collapsed {
-    width: 0; /* Colapsa completamente o menu */
-    padding: 0; /* Remove o padding quando colapsado */
-}
-
-#sidebar.collapsed nav {
-    display: none; /* Esconde o menu de navegação */
-    padding: 0;
+#sidebar.show {
+    transform: translateX(-250px);
 }
 
 .nav-link {
@@ -65,21 +65,21 @@ body {
 
 .nav-link.active {
     color: white;
-    background-color: #495057; /* Mantém o fundo azul para destacar o chat ativo */
+    background-color: #495057;
 }
 
 .new-chat {
-    background-color: #343a40; /* Cor de fundo diferenciada */
-    font-weight: bold; /* Fonte em negrito */
-    border: 2px solid #ffffff; /* Borda branca para destacar */
+    background-color: #343a40;
+    font-weight: bold;
+    border: 2px solid #ffffff;
 }
 
 .new-chat i {
-    margin-right: 10px; /* Espaço entre o ícone e o texto */
+    margin-right: 10px;
 }
 
 .new-chat:hover {
-    background-color: #495057; /* Cor de fundo mais escura ao passar o mouse */
+    background-color: #495057;
 }
 
 #chat-container {
@@ -87,10 +87,47 @@ body {
     display: flex;
     flex-direction: column;
     padding: 20px;
-    transition: background-color 0.3s ease;
-    width: 100%; /* Garante que o contêiner ocupe todo o espaço disponível */
-        align-items: center;
+    transition: margin-left 0.3s ease, width 0.3s ease;
+    width: 100%;
+    margin-left: 0; ]
+    align-items: center;
 }
+
+#chat-background {
+    position: fixed;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    opacity: 0.2;
+    z-index: 1;
+    max-width: 40%;
+    max-height: 40%;
+    pointer-events: none;
+    left: 50%;
+    transition: left 0.3s ease;
+}
+
+
+@media (min-width: 992px) {
+    #chat-container {
+        width: calc(100% - 250px);
+        margin-left: 250px;
+    }
+
+    #sidebar.collapsed ~ #chat-container {
+        width: 100%;
+        margin-left: 0;
+    }
+
+    #chat-background {
+        left: calc(30% + 125px);
+        transform: translateY(-50%);
+    }
+
+    #sidebar.collapsed ~ #chat-container #chat-background {
+        left: calc(50% - 20%);
+    }
+}
+
 
 #chat {
     position: relative;
@@ -102,33 +139,21 @@ body {
     max-height: 100vh;
     width: 60%;
     box-sizing: border-box;
-    z-index: 2; /* Certifica-se de que o conteúdo do chat fique acima da imagem */
+    z-index: 2;
 }
 
-
-#chat-background {
-    position: fixed; /* Muda para 'fixed' para que a imagem permaneça fixa ao viewport */
-    top: 50%;
-    left: 55%;
-    transform: translate(-50%, -50%);
-    opacity: 0.2;
-    z-index: 1;
-    max-width: 40%;
-    max-height: 40%;
-    pointer-events: none; /* Evita que a imagem de fundo interfira com as interações do usuário */
-}
 
 
 .message {
     position: relative;
-    z-index: 2; /* Certifica-se de que as mensagens fiquem sobre a imagem */
+    z-index: 2;
     margin-bottom: 15px;
     display: flex;
-    justify-content: flex-start; /* Alinha o conteúdo das mensagens à esquerda por padrão */
+    justify-content: flex-start;
 }
 
 .message.me {
-    justify-content: flex-end; /* Alinha as mensagens do usuário à direita */
+    justify-content: flex-end;
 }
 
 .message .meta {
@@ -140,8 +165,8 @@ body {
     padding: 10px;
     border-radius: 10px;
     background-color: #f1f1f1;
-    max-width: 60%; /* Limita a largura das mensagens */
-    word-wrap: break-word; /* Quebra palavras longas */
+    max-width: 60%;
+    word-wrap: break-word;
     display: inline-block;
 }
 
@@ -207,55 +232,108 @@ body {
     background-color: #0062cc;
 }
 
-
-/* Aplica a todos os scrollbars na página */
+/* Estilos para rolagem */
 ::-webkit-scrollbar {
-    width: 8px; /* Largura da barra de rolagem */
+    width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-    background: #f1f1f1; /* Cor de fundo do track da barra de rolagem */
-    border-radius: 10px; /* Bordas arredondadas */
+    background: #f1f1f1;
+    border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
-    background-color: #888; /* Cor do "polegar" da barra de rolagem */
-    border-radius: 10px; /* Bordas arredondadas */
-    border: 2px solid #f1f1f1; /* Adiciona espaço ao redor do polegar */
+    background-color: #888;
+    border-radius: 10px;
+    border: 2px solid #f1f1f1;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background-color: #555; /* Cor ao passar o mouse no polegar */
+    background-color: #555;
 }
 
-/* Firefox */
 * {
-    scrollbar-width: thin; /* Torna a barra de rolagem mais fina */
-    scrollbar-color: #888 #f1f1f1; /* Cor do polegar e do track no Firefox */
+    scrollbar-width: thin;
+    scrollbar-color: #888 #f1f1f1;
 }
 
-/* Estilizando especificamente o container de chat */
 #chat {
     overflow-y: auto;
-    scrollbar-width: thin; /* Firefox: Torna o scrollbar fino */
-    scrollbar-color: #888 #f1f1f1; /* Firefox: Cor do thumb e track */
+    scrollbar-width: thin;
+    scrollbar-color: #888 #f1f1f1;
 }
 
 #chat::-webkit-scrollbar {
-    width: 8px; /* Largura do scrollbar no container do chat */
+    width: 8px;
 }
 
 #chat::-webkit-scrollbar-track {
-    background: #f1f1f1; /* Cor de fundo do track do scrollbar no chat */
+    background: #f1f1f1;
     border-radius: 10px;
 }
 
 #chat::-webkit-scrollbar-thumb {
-    background-color: #888; /* Cor do "polegar" da barra de rolagem */
+    background-color: #888;
     border-radius: 10px;
     border: 2px solid #f1f1f1;
 }
 
 #chat::-webkit-scrollbar-thumb:hover {
-    background-color: #555; /* Cor ao passar o mouse no polegar */
+    background-color: #555;
+}
+
+#user-section {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: #343a40;
+    border-radius: 10px;
+}
+
+#user-info {
+    display: flex;
+    align-items: center;
+    color: white;
+}
+
+#user-info i {
+    font-size: 1.5rem;
+    margin-right: 10px;
+}
+
+#user-info span {
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+#logout-btn {
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 0.875rem;
+    background-color: #dc3545;
+    color: white;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+#logout-btn:hover {
+    background-color: #c82333;
+}
+
+
+@media (max-width: 768px) {
+   #chat {
+
+    width: 100%;
+
+}
+
+#message-input {
+    width: 100%;
+}
 }
