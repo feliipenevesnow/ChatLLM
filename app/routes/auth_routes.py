@@ -20,7 +20,9 @@ def login():
             session['last_name'] = user['last_name']
             return redirect(url_for('main.index'))
         else:
-            flash('Credenciais inválidas. Por favor, tente novamente.', 'danger')
+            flash("Email ou senha inválidos. Por favor, tente novamente.", "warning")
+            return redirect(url_for('auth.login'))
+
     return render_template('login.html')
 
 @auth_bp.route('/logout')
