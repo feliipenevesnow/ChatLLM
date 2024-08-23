@@ -9,6 +9,10 @@ bp = Blueprint('main', __name__)
 def index():
     return render_template('home.html')
 
+@bp.route('/login')
+def login():
+    return render_template('login.html')
+
 @bp.route('/chat', methods=['POST'])
 def chat():
     data = request.json
