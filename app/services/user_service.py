@@ -1,29 +1,13 @@
-import MySQLdb.cursors
-from flask import g
-from werkzeug.security import check_password_hash, generate_password_hash
+from app.repositories.user_repository import UserRepository
 
 def authenticate_user(email, password):
-    cursor = g.mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-    cursor.execute('SELECT * FROM users WHERE email = %s', (email,))
-    user = cursor.fetchone()
-    cursor.close()
-
-    if user and check_password_hash(user['password'], password):
-        return user
-    return None
+    return UserRepository.authenticate(email, password)
 
 def add_user(first_name, last_name, email, password):
-    hashed_password = generate_password_hash(password)
-
-    cursor = g.mysql.connection.cursor()
-    cursor.execute('INSERT INTO users (first_name, last_name, email, password) VALUES (%s, %s, %s, %s)',
-                   (first_name, last_name, email, hashed_password))
-    g.mysql.connection.commit()
-    cursor.close()
+    UserRepository.add(first_name, last_name, email, password)
 
 def get_user_by_email(email):
-    cursor = g.mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-    cursor.execute('SELECT * FROM users WHERE email = %s', (email,))
-    user = cursor.fetchone()
-    cursor.close()
-    return user
+    return UserRepository.get_by_email(email)
+
+def update_user_theme(user_id, theme):
+    UserRepository.update_theme(user_id, theme)

@@ -5,10 +5,32 @@ const toggleSidebarBtn = document.getElementById('toggle-sidebar-btn');
 const chatBackground = document.getElementById('chat-background');
 
 
+function getChatIdFromUrl() {
+    const pathArray = window.location.pathname.split('/');
+    const chatId = pathArray[pathArray.length - 1];
+    return chatId;
+}
+
+
+function updateChatList() {
+    fetch('/chats/')
+    .then(response => response.text())
+    .then(html => {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+        const newChatNav = doc.querySelector('.chats-nav').innerHTML;
+        document.querySelector('.chats-nav').innerHTML = newChatNav;
+    })
+    .catch(error => {
+        console.error('Erro ao atualizar a lista de chats:', error);
+    });
+}
+
 
 toggleSidebarBtn.addEventListener('click', () => {
     sidebar.classList.toggle('show');
 });
+
 
 document.getElementById('user-input').addEventListener('keydown', function(event) {
     if (event.key === 'Enter' && !event.shiftKey) {
@@ -17,70 +39,145 @@ document.getElementById('user-input').addEventListener('keydown', function(event
     }
 });
 
+
 document.querySelectorAll('.edit-chat-name').forEach(button => {
     button.addEventListener('click', function(e) {
         e.preventDefault();
         let nameElement = this.previousElementSibling;
         let currentName = nameElement.textContent;
-        nameElement.innerHTML = `<input type='text' class='form-control' value='${currentName}'>`;
+        let chatId = this.closest('.nav-link').getAttribute('data-chat-id');
+
+        nameElement.innerHTML = `<input type='text' class='form-control' placeholder='${currentName}'>`;
         let input = nameElement.querySelector('input');
         input.focus();
 
         input.addEventListener('blur', function() {
-            nameElement.textContent = this.value || currentName;
+            let newName = this.value.trim() || currentName;
+            nameElement.textContent = newName;
+
+            fetch(`/chats/${chatId}/update`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ title: newName })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    console.error('Erro ao atualizar o nome do chat');
+                }
+            })
+            .catch(error => {
+                console.error('Erro ao enviar a atualização:', error);
+            });
         });
     });
 });
 
 
 toggleThemeBtn.addEventListener('click', () => {
+    const body = document.body;
     body.classList.toggle('dark-mode');
 
-    if (body.classList.contains('dark-mode')) {
-        chatBackground.src = "/static/images/logo_dark.png";
-    } else {
-        chatBackground.src = "/static/images/logo.png";
-    }
+    const isDarkMode = body.classList.contains('dark-mode');
+    const newTheme = isDarkMode ? 'dark' : 'light';
+    chatBackground.src = isDarkMode ? "/static/images/logo_dark.png" : "/static/images/logo.png";
+
+    fetch('/update_theme', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ theme: newTheme })
+    })
+    .then(response => {
+        if (!response.ok) {
+            console.error('Erro ao atualizar o tema do usuário');
+        }
+    })
+    .catch(error => {
+        console.error('Erro ao enviar a atualização do tema:', error);
+    });
 });
+
+
 
 
 toggleSidebarBtn.addEventListener('click', () => {
     sidebar.classList.toggle('collapsed');
 });
 
-document.getElementById('send-btn').addEventListener('click', function() {
-    const userInput = document.getElementById('user-input').value.trim();
-    if (userInput) {
-        const chat = document.getElementById('chat');
 
+function enviarMensagem(chatId, userInput) {
+    const chat = document.getElementById('chat');
 
-        const userMessage = document.createElement('div');
-        userMessage.classList.add('message', 'me');
-        userMessage.innerHTML = `
-            <div class="text">${userInput}</div>
-        `;
-        chat.appendChild(userMessage);
+    const userMessage = document.createElement('div');
+    userMessage.classList.add('message', 'me');
+    userMessage.innerHTML = `<div class="text">${userInput}</div>`;
+    chat.appendChild(userMessage);
+    chat.scrollTop = chat.scrollHeight;
 
+    document.getElementById('user-input').value = '';
+
+    fetch(`/mensagens/${chatId}/messages`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            sender_type: 'user',
+            message_text: userInput
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
 
         const botMessage = document.createElement('div');
         botMessage.classList.add('message', 'bot');
-        botMessage.innerHTML = `
-            <div class="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
-        `;
+        botMessage.innerHTML = `<div class="text">${data.ai_message.message_text}</div>`;
         chat.appendChild(botMessage);
-
         chat.scrollTop = chat.scrollHeight;
+    })
+    .catch(error => {
+        console.error('Erro ao enviar a mensagem:', error);
+    });
+}
 
-        document.getElementById('user-input').value = '';
+
+document.getElementById('send-btn').addEventListener('click', function() {
+    const userInput = document.getElementById('user-input').value.trim();
+    const chat = document.getElementById('chat');
+
+    if (userInput) {
+        let chatId = getChatIdFromUrl();
+
+        if (!chatId || isNaN(chatId)) {
+
+            fetch('/chats/create', {
+                method: 'POST',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                chatId = data.chat_id;
+                window.history.pushState(null, '', `/chats/${chatId}`);
+                updateChatList();
+                enviarMensagem(chatId, userInput);
+            })
+            .catch(error => {
+                console.error('Erro ao criar um novo chat:', error);
+            });
+        } else {
+            enviarMensagem(chatId, userInput);
+        }
     }
 });
 
-
 document.querySelectorAll('.nav-link').forEach(link => {
     link.addEventListener('click', function() {
-
         document.querySelectorAll('.nav-link').forEach(nav => nav.classList.remove('active'));
-
         this.classList.add('active');
     });
 });

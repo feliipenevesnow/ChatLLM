@@ -14,7 +14,7 @@
         <div class="text-center mb-4">
             <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" class="img-fluid" style="max-width: 100%;">
         </div>
-        <form id="registerForm" name="registerForm" action="{{ url_for('register.register') }}" method="POST">
+        <form id="registerForm" name="registerForm" action="{{ url_for('user.register') }}" method="POST">
 
             <div class="mb-3">
                 <label for="firstName" class="form-label">Primeiro Nome</label>
@@ -38,7 +38,7 @@
             </div>
             <div class="d-grid gap-2">
                 <button type="submit" class="btn btn-primary">Registre-se</button>
-                <a href="{{ url_for('auth.login') }}" id="showLogin" class="btn btn-secondary">Voltar</a>
+                <a href="{{ url_for('user.login') }}" id="showLogin" class="btn btn-secondary">Voltar</a>
             </div>
         </form>
     </div>
