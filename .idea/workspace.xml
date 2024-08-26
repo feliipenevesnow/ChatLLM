@@ -5,28 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4fc077d1-d312-4ab8-911f-44105ce317ab" name="Changes" comment="Estilização do chat">
-      <change afterPath="$PROJECT_DIR$/app/models/chat.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/models/message.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/models/user.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/repositories/chat_repository.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/repositories/message_repository.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/repositories/user_repository.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/routes/message_routes.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/routes/user_routes.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/services/chat_service.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/services/message_service.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/routes/auth_routes.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/routes/main_routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/chat_routes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/routes/register_routes.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/routes/user_routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/user_routes.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/services/user_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/services/user_service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/static/css/chat.css" beforeDir="false" afterPath="$PROJECT_DIR$/app/static/css/chat.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/static/js/chat.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/static/js/chat.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/templates/chat.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/chat.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/login.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/templates/register.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/register.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,15 +38,15 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Felipe Neves/Desktop/ChatLLM&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "DefaultHtmlFileTemplate": "HTML File",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "C:/Users/Aluno/Desktop/ChatLLM"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\PC\Desktop\ChatLLM\app\static\images" />
@@ -75,7 +58,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-python-sdk-ce3d9afa04ac-ba05f1cad1b1-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-242.20224.347" />
+        <option value="bundled-python-sdk-50da183f06c8-d3b881c8e49f-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-233.13135.95" />
       </set>
     </attachedChunks>
   </component>

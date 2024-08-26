@@ -1,8 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session, jsonify
-from app.services.user_service import authenticate_user, add_user, get_user_by_email, update_user_theme
+from app.services.user_service import UserService
 
 user_bp = Blueprint('user', __name__)
-
 @user_bp.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -11,7 +10,7 @@ def login():
 
         session.clear()
 
-        user = authenticate_user(email, password)
+        user = UserService.authenticate_user(email, password)
         if user:
             session['loggedin'] = True
             session['id'] = user.id
@@ -37,13 +36,13 @@ def register():
 
         if password != confirm_password:
             flash('As senhas não conferem!', 'danger')
-        elif get_user_by_email(email):
+        elif UserService.get_user_by_email(email):
             flash('Usuário já existe!', 'danger')
         else:
             session.clear()
 
-            add_user(first_name, last_name, email, password)
-            user = authenticate_user(email, password)
+            UserService.add_user(first_name, last_name, email, password)
+            user = UserService.authenticate_user(email, password)
 
             if user:
                 session['loggedin'] = True
@@ -64,7 +63,6 @@ def logout():
 
 @user_bp.route('/update_theme', methods=['POST'])
 def update_theme():
-    print("oidjnaowidjnoiwajdmoaiwndoaiwndoaiwndoi")
 
     if 'id' not in session:
         return jsonify({'error': 'Usuário não autenticado'}), 403
@@ -76,7 +74,7 @@ def update_theme():
     print(new_theme)
 
     if new_theme in ['light', 'dark']:
-        update_user_theme(user_id, new_theme)
+        UserService.update_user_theme(user_id, new_theme)
         session['theme'] = new_theme
         return jsonify({'message': 'Tema atualizado com sucesso'})
     else:

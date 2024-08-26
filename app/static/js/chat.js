@@ -4,13 +4,11 @@ const sidebar = document.getElementById('sidebar');
 const toggleSidebarBtn = document.getElementById('toggle-sidebar-btn');
 const chatBackground = document.getElementById('chat-background');
 
-
 function getChatIdFromUrl() {
     const pathArray = window.location.pathname.split('/');
     const chatId = pathArray[pathArray.length - 1];
     return chatId;
 }
-
 
 function updateChatList() {
     fetch('/chats/')
@@ -19,12 +17,67 @@ function updateChatList() {
         const parser = new DOMParser();
         const doc = parser.parseFromString(html, 'text/html');
         const newChatNav = doc.querySelector('.chats-nav').innerHTML;
-        document.querySelector('.chats-nav').innerHTML = newChatNav;
+        const chatNavElement = document.querySelector('.chats-nav');
+        chatNavElement.innerHTML = newChatNav;
+
+        const currentChatId = getChatIdFromUrl();
+        if (currentChatId) {
+            chatNavElement.querySelector(`[data-chat-id='${currentChatId}']`).classList.add('active');
+        }
     })
     .catch(error => {
         console.error('Erro ao atualizar a lista de chats:', error);
     });
 }
+
+function sendMessage(chatId, userInput) {
+    const chat = document.getElementById('chat');
+
+    const userMessage = document.createElement('div');
+    userMessage.classList.add('message', 'me');
+    userMessage.innerHTML = `<div class="text">${userInput}</div>`;
+    chat.appendChild(userMessage);
+    chat.scrollTop = chat.scrollHeight;
+
+    document.getElementById('user-input').value = '';
+
+    fetch(`/mensagens/${chatId}/messages`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            sender_type: 'user',
+            message_text: userInput
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+
+        const botMessage = document.createElement('div');
+        botMessage.classList.add('message', 'bot');
+        botMessage.innerHTML = `<div class="text">${data.ai_message.message_text}</div>`;
+        chat.appendChild(botMessage);
+        chat.scrollTop = chat.scrollHeight;
+    })
+    .catch(error => {
+        console.error('Erro ao enviar a mensagem:', error);
+    });
+}
+
+document.querySelectorAll('.nav-link').forEach(link => {
+    link.addEventListener('click', function() {
+        document.querySelectorAll('.nav-link').forEach(nav => nav.classList.remove('active'));
+        this.classList.add('active');
+    });
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    const currentChatId = getChatIdFromUrl();
+    if (currentChatId) {
+        document.querySelector(`[data-chat-id='${currentChatId}']`).classList.add('active');
+    }
+});
 
 
 toggleSidebarBtn.addEventListener('click', () => {
@@ -38,7 +91,6 @@ document.getElementById('user-input').addEventListener('keydown', function(event
         document.getElementById('send-btn').click();
     }
 });
-
 
 document.querySelectorAll('.edit-chat-name').forEach(button => {
     button.addEventListener('click', function(e) {
@@ -74,7 +126,6 @@ document.querySelectorAll('.edit-chat-name').forEach(button => {
     });
 });
 
-
 toggleThemeBtn.addEventListener('click', () => {
     const body = document.body;
     body.classList.toggle('dark-mode');
@@ -101,48 +152,9 @@ toggleThemeBtn.addEventListener('click', () => {
 });
 
 
-
-
 toggleSidebarBtn.addEventListener('click', () => {
     sidebar.classList.toggle('collapsed');
 });
-
-
-function enviarMensagem(chatId, userInput) {
-    const chat = document.getElementById('chat');
-
-    const userMessage = document.createElement('div');
-    userMessage.classList.add('message', 'me');
-    userMessage.innerHTML = `<div class="text">${userInput}</div>`;
-    chat.appendChild(userMessage);
-    chat.scrollTop = chat.scrollHeight;
-
-    document.getElementById('user-input').value = '';
-
-    fetch(`/mensagens/${chatId}/messages`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            sender_type: 'user',
-            message_text: userInput
-        })
-    })
-    .then(response => response.json())
-    .then(data => {
-
-        const botMessage = document.createElement('div');
-        botMessage.classList.add('message', 'bot');
-        botMessage.innerHTML = `<div class="text">${data.ai_message.message_text}</div>`;
-        chat.appendChild(botMessage);
-        chat.scrollTop = chat.scrollHeight;
-    })
-    .catch(error => {
-        console.error('Erro ao enviar a mensagem:', error);
-    });
-}
-
 
 document.getElementById('send-btn').addEventListener('click', function() {
     const userInput = document.getElementById('user-input').value.trim();
@@ -164,20 +176,15 @@ document.getElementById('send-btn').addEventListener('click', function() {
                 chatId = data.chat_id;
                 window.history.pushState(null, '', `/chats/${chatId}`);
                 updateChatList();
-                enviarMensagem(chatId, userInput);
+                sendMessage(chatId, userInput);
             })
             .catch(error => {
                 console.error('Erro ao criar um novo chat:', error);
             });
         } else {
-            enviarMensagem(chatId, userInput);
+            sendMessage(chatId, userInput);
         }
     }
 });
 
-document.querySelectorAll('.nav-link').forEach(link => {
-    link.addEventListener('click', function() {
-        document.querySelectorAll('.nav-link').forEach(nav => nav.classList.remove('active'));
-        this.classList.add('active');
-    });
-});
+
