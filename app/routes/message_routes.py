@@ -31,10 +31,12 @@ def create_message(chat_id):
 
         message_history.update_history(data['message_text'], "")  # Somente atualiza com a mensagem do usuário
 
+        print(message_history.format_history_for_prompt())
+
         # Preparar o prompt no novo formato
         prompt = ChatPromptTemplate.from_messages(
             message_history.format_history_for_prompt() +
-            [("human", data['message_text'])]
+            [("user", data['message_text'])]
         )
 
         ai_response_markdown = gemini_service.generate_response_with_retry(prompt)
