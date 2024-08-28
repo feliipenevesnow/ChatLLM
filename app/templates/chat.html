@@ -37,7 +37,7 @@
     <div class="chats-nav">
         <nav class="nav flex-column">
             {% for chat in chats %}
-            <a class="nav-link chat-link" href="{{ url_for('chat.view_chat', chat_id=chat.id) }}"
+            <a class="nav-link chat-name chat-link" href="{{ url_for('chat.view_chat', chat_id=chat.id) }}"
                data-chat-id="{{ chat.id }}">
                 <i class="fas fa-comments"></i>
                 <span class="chat-name">{{ chat.title }}</span>
@@ -69,8 +69,9 @@
         {% if messages %}
         {% for message in messages %}
         <div class="message {{ 'me' if message.sender_type == 'user' else 'bot' }}">
-            <div class="text">{{ message.message_text }}</div>
+            <div class="text" id="message-{{ message.id }}" data-html="true">{{ message.message_text|safe }}</div>
         </div>
+
         {% endfor %}
         {% endif %}
     </div>

@@ -1,8 +1,11 @@
 from flask import Blueprint, render_template, request, redirect, url_for, session, jsonify
 from app.services.chat_service import ChatService
 from app.services.message_service import MessageService
+from app.models.message_history import MessageHistory
 
 chat_bp = Blueprint('chat', __name__)
+
+# OBJETO DESSE SER CRIADO AQUI.
 
 @chat_bp.route('/')
 def index():
@@ -29,6 +32,14 @@ def view_chat(chat_id):
     chat = ChatService.get_chat_by_id(chat_id)
     messages = MessageService.get_messages_by_chat(chat_id)
     chats = ChatService.get_chats_by_user(session.get('id'))
+
+    # Verifica se o historico do chat_id já existe na sessão e é do mesmo chat
+    if 'message_history' not in session or session.get('current_chat_id') != chat_id:
+        message_history = MessageHistory()
+        for message in messages:
+            message_history.update_history(message.sender_type, message.message_text)
+        session['message_history'] = message_history.history
+        session['current_chat_id'] = chat_id
     return render_template('chat.html', chats=chats, messages=messages)
 
 @chat_bp.route('/<int:chat_id>/update', methods=['POST'])

@@ -33,6 +33,12 @@ function updateChatList() {
 function sendMessage(chatId, userInput) {
     const chat = document.getElementById('chat');
 
+    // Verifique e atualize o título do chat no frontend antes de enviar a mensagem
+    const chatLink = document.querySelector(`.chat-link[data-chat-id='${chatId}'] .chat-name`);
+    if (chatLink && chatLink.textContent.trim() === "Novo Chat") {
+        chatLink.textContent = userInput;  // Atualizar o título para a primeira mensagem imediatamente
+    }
+
     const userMessage = document.createElement('div');
     userMessage.classList.add('message', 'me');
     userMessage.innerHTML = `<div class="text">${userInput}</div>`;
@@ -53,7 +59,6 @@ function sendMessage(chatId, userInput) {
     })
     .then(response => response.json())
     .then(data => {
-
         const botMessage = document.createElement('div');
         botMessage.classList.add('message', 'bot');
         botMessage.innerHTML = `<div class="text">${data.ai_message.message_text}</div>`;
@@ -64,6 +69,7 @@ function sendMessage(chatId, userInput) {
         console.error('Erro ao enviar a mensagem:', error);
     });
 }
+
 
 document.querySelectorAll('.nav-link').forEach(link => {
     link.addEventListener('click', function() {
@@ -95,6 +101,8 @@ document.getElementById('user-input').addEventListener('keydown', function(event
 document.querySelectorAll('.edit-chat-name').forEach(button => {
     button.addEventListener('click', function(e) {
         e.preventDefault();
+        e.stopPropagation();
+
         let nameElement = this.previousElementSibling;
         let currentName = nameElement.textContent;
         let chatId = this.closest('.nav-link').getAttribute('data-chat-id');

@@ -20,3 +20,9 @@ class ChatService:
     @staticmethod
     def update_chat_title(chat_id, new_title):
         ChatRepository.update_chat_title(chat_id, new_title)
+
+    @staticmethod
+    def update_chat_title_if_default(chat_id, first_message):
+        chat = ChatRepository.get_chat_by_id(chat_id)
+        if chat and chat.title == "Novo Chat":
+            ChatRepository.update_chat_title(chat_id, first_message)
