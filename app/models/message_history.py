@@ -8,9 +8,6 @@ class MessageHistory:
         else:
             self.history.append(("ai", message))
 
-        if len(self.history) > 6:
-            self.history = self.history[-6:]
-
     def format_history_for_prompt(self):
         return [(sender_type, message) for sender_type, message in self.history]
 

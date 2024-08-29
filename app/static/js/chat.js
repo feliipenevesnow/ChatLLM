@@ -33,10 +33,9 @@ function updateChatList() {
 function sendMessage(chatId, userInput) {
     const chat = document.getElementById('chat');
 
-    // Verifique e atualize o título do chat no frontend antes de enviar a mensagem
     const chatLink = document.querySelector(`.chat-link[data-chat-id='${chatId}'] .chat-name`);
     if (chatLink && chatLink.textContent.trim() === "Novo Chat") {
-        chatLink.textContent = userInput;  // Atualizar o título para a primeira mensagem imediatamente
+        chatLink.textContent = userInput;
     }
 
     const userMessage = document.createElement('div');
@@ -45,7 +44,15 @@ function sendMessage(chatId, userInput) {
     chat.appendChild(userMessage);
     chat.scrollTop = chat.scrollHeight;
 
-    document.getElementById('user-input').value = '';
+    const typingIndicator = document.createElement('div');
+    typingIndicator.classList.add('message', 'bot');
+    typingIndicator.innerHTML = `<div class="text typing-indicator"><span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></div>`;
+    chat.appendChild(typingIndicator);
+    chat.scrollTop = chat.scrollHeight;
+
+    const textarea = document.getElementById('user-input');
+    textarea.value = '';
+    textarea.style.height = 'auto';
 
     fetch(`/mensagens/${chatId}/messages`, {
         method: 'POST',
@@ -59,6 +66,8 @@ function sendMessage(chatId, userInput) {
     })
     .then(response => response.json())
     .then(data => {
+        chat.removeChild(typingIndicator);
+
         const botMessage = document.createElement('div');
         botMessage.classList.add('message', 'bot');
         botMessage.innerHTML = `<div class="text">${data.ai_message.message_text}</div>`;
@@ -67,6 +76,7 @@ function sendMessage(chatId, userInput) {
     })
     .catch(error => {
         console.error('Erro ao enviar a mensagem:', error);
+        chat.removeChild(typingIndicator);
     });
 }
 
@@ -88,14 +98,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 toggleSidebarBtn.addEventListener('click', () => {
     sidebar.classList.toggle('show');
-});
-
-
-document.getElementById('user-input').addEventListener('keydown', function(event) {
-    if (event.key === 'Enter' && !event.shiftKey) {
-        event.preventDefault();
-        document.getElementById('send-btn').click();
-    }
 });
 
 document.querySelectorAll('.edit-chat-name').forEach(button => {
@@ -184,7 +186,15 @@ document.getElementById('send-btn').addEventListener('click', function() {
                 chatId = data.chat_id;
                 window.history.pushState(null, '', `/chats/${chatId}`);
                 updateChatList();
-                sendMessage(chatId, userInput);
+
+                setTimeout(() => {
+                    const chatLink = document.querySelector(`.chat-link[data-chat-id='${chatId}'] .chat-name`);
+                    if (chatLink && chatLink.textContent.trim() === "Novo Chat") {
+                        chatLink.textContent = userInput;
+                    }
+
+                    sendMessage(chatId, userInput);
+                }, 50);
             })
             .catch(error => {
                 console.error('Erro ao criar um novo chat:', error);
@@ -195,4 +205,14 @@ document.getElementById('send-btn').addEventListener('click', function() {
     }
 });
 
+document.getElementById('user-input').addEventListener('input', function() {
+    this.style.height = 'auto';
+    this.style.height = this.scrollHeight + 'px';
+});
 
+document.getElementById('user-input').addEventListener('keydown', function(event) {
+    if (event.key === 'Enter' && !event.shiftKey) {
+        event.preventDefault();
+        document.getElementById('send-btn').click();
+    }
+});

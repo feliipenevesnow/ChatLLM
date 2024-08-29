@@ -5,6 +5,9 @@ from app.models.chat import Chat
 class ChatRepository:
     @staticmethod
     def create_chat(user_id, title):
+        if len(title) > 100:
+            title = title[:100] + '...'
+
         cursor = g.mysql.connection.cursor()
         cursor.execute(
             'INSERT INTO chats (user_id, title) VALUES (%s, %s)', (user_id, title)
@@ -16,6 +19,9 @@ class ChatRepository:
 
     @staticmethod
     def update_chat_title(chat_id, new_title):
+        if len(new_title) > 100:
+            new_title = new_title[:100] + '...'
+
         cursor = g.mysql.connection.cursor()
         cursor.execute(
             'UPDATE chats SET title = %s WHERE id = %s',

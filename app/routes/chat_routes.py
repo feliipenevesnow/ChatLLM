@@ -5,8 +5,6 @@ from app.models.message_history import MessageHistory
 
 chat_bp = Blueprint('chat', __name__)
 
-# OBJETO DESSE SER CRIADO AQUI.
-
 @chat_bp.route('/')
 def index():
     user_id = session.get('id')
@@ -33,17 +31,17 @@ def view_chat(chat_id):
     messages = MessageService.get_messages_by_chat(chat_id)
     chats = ChatService.get_chats_by_user(session.get('id'))
 
-    # Verifica se o historico do chat_id já existe na sessão e é do mesmo chat
-    for message in messages:
-        print("?: " + str(message.sender_type) + " TEXTO:" + str(message.message_text))
-    print("\n")
+    session.pop('message_history', None)
+
+    session.pop('current_chat_id', None)
+
     if 'message_history' not in session or session.get('current_chat_id') != chat_id:
         message_history = MessageHistory()
         for message in messages:
             message_history.update_history(message.sender_type, message.message_text)
         session['message_history'] = message_history.history
         session['current_chat_id'] = chat_id
-        print(session['message_history'])
+
 
     return render_template('chat.html', chats=chats, messages=messages)
 

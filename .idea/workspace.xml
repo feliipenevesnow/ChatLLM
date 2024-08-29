@@ -5,10 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4fc077d1-d312-4ab8-911f-44105ce317ab" name="Changes" comment="Estilização do chat">
+      <change afterPath="$PROJECT_DIR$/app/arquivos_temp/Banco_Negocio.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/models/message_history.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/message_history.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/repositories/chat_repository.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/repositories/chat_repository.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/routes/chat_routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/chat_routes.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/routes/message_routes.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/message_routes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/services/gemini_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/services/gemini_service.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/static/css/chat.css" beforeDir="false" afterPath="$PROJECT_DIR$/app/static/css/chat.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/static/js/chat.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/static/js/chat.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/chat.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/chat.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/login.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,22 +44,54 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Aluno/Desktop/ChatLLM&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "DefaultHtmlFileTemplate": "HTML File",
+    "Python.gemini_service.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "C:/Users/PC/Desktop/ChatLLM/app/arquivos_temp"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\PC\Desktop\ChatLLM\app\arquivos_temp" />
       <recent name="C:\Users\PC\Desktop\ChatLLM\app\static\images" />
       <recent name="C:\Users\Felipe Neves\Desktop\ChatLLM\app\routes" />
       <recent name="C:\Users\Felipe Neves\Desktop\ChatLLM\app\templates" />
       <recent name="C:\Users\Felipe Neves\Desktop\Documentos\Uni1500\app\static\images" />
     </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="gemini_service" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="Uni1500" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="SDK_NAME" value="Python 3.12 (pythonProject)" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/app/services" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/app/services/gemini_service.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.gemini_service" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
@@ -86,7 +125,15 @@
       <option name="project" value="LOCAL" />
       <updated>1724374611544</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Estilização do chat">
+      <option name="closed" value="true" />
+      <created>1724850027550</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1724850027550</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="UnknownFeatures">
